@@ -60,6 +60,7 @@ public class AddressBook {
      */
     private static final String MESSAGE_ADDED = "New person added: %1$s, Phone: %2$s, Email: %3$s";
     private static final String MESSAGE_ADDRESSBOOK_CLEARED = "Address book has been cleared!";
+    private static final String MESSAGE_ADDRESSBOOK_SORTED = "Address book has been sorted!";
     private static final String MESSAGE_COMMAND_HELP = "%1$s: %2$s";
     private static final String MESSAGE_COMMAND_HELP_PARAMETERS = "\tParameters: %1$s";
     private static final String MESSAGE_COMMAND_HELP_EXAMPLE = "\tExample: %1$s";
@@ -92,6 +93,7 @@ public class AddressBook {
                                                             + PERSON_DATA_PREFIX_PHONE + "%2$s " // phone
                                                             + PERSON_DATA_PREFIX_EMAIL + "%3$s"; // email
     private static final String COMMAND_ADD_WORD = "add";
+    private static final String COMMAND_ADD_SORT = "sort";
     private static final String COMMAND_ADD_DESC = "Adds a person to the address book.";
     private static final String COMMAND_ADD_PARAMETERS = "NAME "
                                                       + PERSON_DATA_PREFIX_PHONE + "PHONE_NUMBER "
@@ -371,6 +373,8 @@ public class AddressBook {
         switch (commandType) {
         case COMMAND_ADD_WORD:
             return executeAddPerson(commandArgs);
+        case COMMAND_ADD_SORT:
+            return executeSorting();
         case COMMAND_FIND_WORD:
             return executeFindPersons(commandArgs);
         case COMMAND_LIST_WORD:
@@ -440,6 +444,15 @@ public class AddressBook {
     private static String getMessageForSuccessfulAddPerson(HashMap<PersonProperty, String> addedPerson) {
         return String.format(MESSAGE_ADDED,
                 getNameFromPerson(addedPerson), getPhoneFromPerson(addedPerson), getEmailFromPerson(addedPerson));
+    }
+
+    /**
+     * Sorts the list of all persons in an address book based on alphabetical order.
+     */
+    private static String executeSorting(){
+        ALL_PERSONS.sort((r1, r2)-> (r1.get(PersonProperty.NAME).compareTo(r2.get(PersonProperty.NAME))));
+        savePersonsToFile(getAllPersonsInAddressBook(), storageFilePath);
+        return MESSAGE_ADDRESSBOOK_SORTED;
     }
 
     /**
@@ -872,7 +885,7 @@ public class AddressBook {
      * @param person whose name you want
      */
     private static String getNameFromPerson(HashMap<PersonProperty, String> person) {
-        return person.get(PERSON_PROPERTY_NAME);
+        return person.get(PersonProperty.NAME);
     }
 
     /**
@@ -881,7 +894,7 @@ public class AddressBook {
      * @param person whose phone number you want
      */
     private static String getPhoneFromPerson(HashMap<PersonProperty, String> person) {
-        return person.get(PERSON_PROPERTY_PHONE);
+        return person.get(PersonProperty.PHONE);
     }
 
     /**
@@ -890,7 +903,7 @@ public class AddressBook {
      * @param person whose email you want
      */
     private static String getEmailFromPerson(HashMap<PersonProperty, String> person) {
-        return person.get(PERSON_PROPERTY_EMAIL);
+        return person.get(PersonProperty.EMAIL);
     }
 
     /**
