@@ -108,6 +108,10 @@ Examples:
 * `find Betsy` <br> 
   `delete 1`
   > Deletes the 1st person in the results of the `find` command.
+  
+#### Sorting all entries: `sort`
+> Sorts all entries from the address book in alphabetical order.  
+Format: `sort` 
 
 #### Clearing all entries: `clear`
 > Clears all entries from the address book.  
