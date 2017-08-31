@@ -453,9 +453,13 @@ public class AddressBook {
      * Sorts the list of all persons in an address book based on alphabetical order.
      */
     private static String executeSorting(){
-        ALL_PERSONS.sort((r1, r2)-> (r1.get(PersonProperty.NAME).compareTo(r2.get(PersonProperty.NAME))));
+        sortAddressBook();
         savePersonsToFile(getAllPersonsInAddressBook(), storageFilePath);
         return MESSAGE_ADDRESSBOOK_SORTED;
+    }
+
+    private static void sortAddressBook() {
+        ALL_PERSONS.sort((r1, r2)-> (r1.get(PersonProperty.NAME).compareTo(r2.get(PersonProperty.NAME))));
     }
 
     /**
